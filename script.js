@@ -125,77 +125,78 @@ async function carregarPastasDisponiveis() {
 function carregarPastasHardcoded() {
     console.log("Carregando pastas com dados hardcoded");
     
-    // Dados hardcoded das pastas e cânticos
+    // Dados hardcoded das pastas e cânticos (baseados nos arquivos reais)
     canticosPorPasta = {
         "Aclamação": [
-            "A Vossa Palavra Senhor.jpeg",
-            "A Minhalma Abrirei.jpeg", 
-            "Aleluia Como O Pai Me Amou.jpeg",
-            "Buscai Primeiro O Reino De Deus.jpeg",
-            "Como Sao Belos.jpeg",
-            "Eu Vim Para Escutar.jpeg",
-            "Palavra De Salvacao.jpeg",
-            "Que Alegria Cristo Ressurgiu.jpeg",
-            "Vai Falar No Evangelho.jpeg",
-            "Vinde Espirito De Deus.jpeg"
+            "a vossa palavra senhor.jpeg",
+            "a_minhalma_abrirei.pdf",
+            "a_vossa_palavra_senhor.pdf",
+            "aleluia_como_o_pai_me_amou.pdf",
+            "buscai_primeiro_o_reino_de_deus.pdf",
+            "como_sao_belos.pdf",
+            "eu_vim_para_escutar.pdf",
+            "palavra_de_salvacao.pdf",
+            "que_alegria_cristo_ressurgiu.pdf",
+            "vai_falar_no_evangelho.pdf",
+            "vinde_espirito_de_deus.pdf"
         ],
         "Ato Penitencial": [
-            "Kyrie Eleison.jpeg",
-            "Perdao Senhor.jpeg",
-            "Senhor Tende Piedade.jpeg"
+            "kyrie_eleison.pdf",
+            "perdao_senhor.pdf",
+            "senhor_tende_piedade.pdf"
         ],
         "Comunhão": [
-            "Eu Sou O Pao Vivo.jpeg",
-            "O Pao Da Vida.jpeg",
-            "Vinde A Mim.jpeg"
+            "eu_sou_o_pao_vivo.pdf",
+            "o_pao_da_vida.pdf",
+            "vinde_a_mim.pdf"
         ],
         "Cordeiro": [
-            "Cordeiro De Deus.jpeg",
-            "Cordeiro Santo.jpeg"
+            "cordeiro_de_deus.pdf",
+            "cordeiro_santo.pdf"
         ],
         "Entrada": [
             "1 - Quadro Entrada - Creio.jpeg",
-            "A Biblia E A Palavra De Deus.jpeg",
-            "Bom Pastor.jpeg",
-            "Coração Santo.jpeg",
-            "Cristo Ressucitou Aleluia.jpeg",
-            "Deixa A Luz Do Ceu Entrar.jpeg",
-            "Eis Me Aqui Senhor.jpeg",
             "Entrada - Creio.jpeg",
-            "Esatremos Aqui Reunidos.jpeg",
-            "Estaremos Aqui Reunidos.jpeg",
-            "Eu E Minha Casa Serviremos Ao Senhor.jpeg",
-            "Faco Novas Todas As Coisas.jpeg",
-            "Hosana Hey Hosana Ha.jpeg",
-            "Oh Senhor Nós Estamos Aqui.jpeg",
-            "Por Entre Aclamações.jpeg",
-            "Por Sua Morte.jpeg",
-            "Porque Ele Vive.jpeg",
-            "Senhor Quem Entrara.jpeg",
-            "Te Amarei.jpeg"
+            "a_biblia_e_a_palavra_de_deus.pdf",
+            "bom_pastor.pdf",
+            "coração_santo.pdf",
+            "cristo_ressucitou_aleluia.pdf",
+            "deixa_a_luz_do_ceu_entrar.pdf",
+            "eis_me_aqui_senhor.pdf",
+            "esatremos_aqui_reunidos.pdf",
+            "estaremos_aqui_reunidos.pdf",
+            "eu e minha casa serviremos ao senhor.pdf",
+            "faco_novas_todas_as_coisas.pdf",
+            "hosana_hey_hosana_ha.pdf",
+            "oh senhor nós estamos aqui.jpeg",
+            "por entre aclamações.pdf",
+            "por_sua_morte.pdf",
+            "porque_ele_vive.pdf",
+            "senhor_quem_entrara.pdf",
+            "te_amarei.pdf"
         ],
         "Final": [
-            "Ide Em Paz.jpeg",
-            "Maria Passa Na Frente.jpeg",
-            "Vai Em Paz.jpeg"
+            "ide_em_paz.pdf",
+            "maria_passa_na_frente.pdf",
+            "vai_em_paz.pdf"
         ],
         "Gloria": [
-            "Gloria A Deus Nas Alturas.jpeg",
-            "Gloria In Excelsis Deo.jpeg"
+            "gloria_a_deus_nas_alturas.pdf",
+            "gloria_in_excelsis_deo.pdf"
         ],
         "Maria": [
-            "Ave Maria.jpeg",
-            "Maria Mae De Jesus.jpeg",
-            "Salve Rainha.jpeg"
+            "ave_maria.pdf",
+            "maria_mae_de_jesus.pdf",
+            "salve_rainha.pdf"
         ],
         "Ofertório": [
-            "Aceita Deus Pai.jpeg",
-            "Ofertorio.jpeg",
-            "Recebe O Que E Teu.jpeg"
+            "aceita_deus_pai.pdf",
+            "ofertorio.pdf",
+            "recebe_o_que_e_teu.pdf"
         ],
         "Santo": [
-            "Santo Santo Santo.jpeg",
-            "Sanctus.jpeg"
+            "santo_santo_santo.pdf",
+            "sanctus.pdf"
         ]
     };
 
