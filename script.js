@@ -141,9 +141,17 @@ function carregarPastasHardcoded() {
             "vinde_espirito_de_deus.pdf"
         ],
         "Ato Penitencial": [
-            "kyrie_eleison.pdf",
+            "Eu confesso a Deus.jpeg",
+            "conheco_um_coracao.pdf",
+            "coracoes_arrependidos.pdf",
+            "kyrie_eleison_jmj.pdf",
+            "pelos_pecados_senhor_piedade_de_nos.pdf",
             "perdao_senhor.pdf",
-            "senhor_tende_piedade.pdf"
+            "renovame.pdf",
+            "senhor que viestes salvar.jpeg",
+            "senhor_que_viestes_salvar_kirie_elleisson.pdf",
+            "senhor_tende_piedade_de_nos.pdf",
+            "senhor_tende_piedade_perdoai_nossa_culpa.pdf"
         ],
         "Comunhão": [
             "eu_sou_o_pao_vivo.pdf",
