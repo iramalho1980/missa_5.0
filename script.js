@@ -1,114 +1,5 @@
-// Dados dos cânticos organizados por pasta
-const canticosPorPasta = {
-    "Aclamação": [
-        "a vossa palavra senhor.jpeg",
-        "a_minhalma_abrirei.pdf",
-        "a_vossa_palavra_senhor.pdf",
-        "aleluia_como_o_pai_me_amou.pdf",
-        "buscai_primeiro_o_reino_de_deus.pdf",
-        "como_sao_belos.pdf",
-        "eu_vim_para_escutar.pdf",
-        "palavra_de_salvacao.pdf",
-        "que_alegria_cristo_ressurgiu.pdf",
-        "vai_falar_no_evangelho.pdf",
-        "vinde_espirito_de_deus.pdf"
-    ],
-    "Adoração": [],
-    "Ato Penitencial": [
-        "Eu confesso a Deus.jpeg",
-        "conheco_um_coracao.pdf",
-        "coracoes_arrependidos.pdf",
-        "kyrie_eleison_jmj.pdf",
-        "pelos_pecados_senhor_piedade_de_nos.pdf",
-        "perdao_senhor.pdf",
-        "renovame.pdf",
-        "senhor que viestes salvar.jpeg",
-        "senhor_que_viestes_salvar_kirie_elleisson.pdf",
-        "senhor_tende_piedade_de_nos.pdf",
-        "senhor_tende_piedade_perdoai_nossa_culpa.pdf"
-    ],
-    "Campanha da Fraternidade": [],
-    "Comunhão": [],
-    "Cordeiro": [
-        "cordeiro de deus.pdf"
-    ],
-    "Entrada": [
-        "Entrada - Creio.jpeg",
-        "a_biblia_e_a_palavra_de_deus.pdf",
-        "bom_pastor.pdf",
-        "coração_santo.pdf",
-        "cristo_ressucitou_aleluia.pdf",
-        "deixa_a_luz_do_ceu_entrar.pdf",
-        "eis_me_aqui_senhor.pdf",
-        "esatremos_aqui_reunidos.pdf",
-        "estaremos_aqui_reunidos.pdf",
-        "eu e minha casa serviremos ao senhor.pdf",
-        "faco_novas_todas_as_coisas.pdf",
-        "hosana_hey_hosana_ha.pdf",
-        "oh senhor nós estamos aqui.jpeg",
-        "por entre aclamações.pdf",
-        "por_sua_morte.pdf",
-        "porque_ele_vive.pdf",
-        "senhor_quem_entrara.pdf",
-        "te_amarei.pdf",
-        "toda_biblia_e_comunicacao.pdf",
-        "tu_es_a_razao_da_jornada.pdf",
-        "vamos celebrar.pdf",
-        "vem_louvar.pdf"
-    ],
-    "Final": [
-        "Mostra-me senhor.jpeg",
-        "a_alegria_esta_no_coracao.pdf",
-        "anjos_de_deus.pdf",
-        "como_o_pai_me_enviou.pdf",
-        "cristo_eh_a_felicidade.pdf",
-        "deixa_luz_do_ceu_entrar.pdf",
-        "hoje_e_tempo_de_louvar.pdf",
-        "pelas_estradas_da_vida.pdf",
-        "segura_na_mao_de_deus.pdf",
-        "tomado_pela_mao.pdf",
-        "tu_es_razao_jornada.pdf"
-    ],
-    "Gloria": [
-        "Gloria a Deus.jpeg",
-        "a_ele_seja_a_gloria.pdf",
-        "gloria_a_deus_nas_alturas.pdf",
-        "gloria_a_deus_nas_alturas__rock_balada.pdf",
-        "gloria_ao_pai_criador.pdf"
-    ],
-    "Maria": [
-        "a_escolhida.pdf",
-        "ave_cheia_de_graca.pdf",
-        "imaculada_maria_de_deus.pdf",
-        "maria_de_nazare.pdf",
-        "santa_mae_maria.pdf",
-        "santa_maria_vem.pdf"
-    ],
-    "Natal": [],
-    "Novena": [],
-    "Ofertório": [
-        "a_mesa_santa_que_preparamos.pdf",
-        "de_maos_estendidas.pdf",
-        "meu_coracao_eh_para_ti.pdf",
-        "minha_vida_tem_sentido.pdf",
-        "muitos_graos_de_trigo.pdf",
-        "ofertas_singelas.pdf",
-        "os dons que trago aqui.jpeg",
-        "sabes_senhor.pdf",
-        "um_coracao_para_amar.pdf"
-    ],
-    "Paz": [],
-    "Quaresma": [],
-    "Santo": [
-        "Nosso Deus senhor é santo.jpeg",
-        "hosana_eh.pdf",
-        "hosana_no_alto_ceu.pdf",
-        "o_senhor_eh_santo.pdf",
-        "santo santo é o senhor.jpeg",
-        "santo_santo_e.pdf"
-    ],
-    "Terço": []
-};
+// Os cânticos serão carregados dinamicamente das pastas
+let canticosPorPasta = {};
 
 // Tipos de cânticos para missa
 const tiposCantico = [
@@ -147,6 +38,7 @@ const fileInput = document.getElementById('file-input');
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
+    carregarPastasDisponiveis();
     carregarListaSalva();
 });
 
@@ -184,6 +76,90 @@ function setupEventListeners() {
     ordemMissaDiv.addEventListener('drop', handleDrop);
 }
 
+// Função para carregar pastas disponíveis dinamicamente
+async function carregarPastasDisponiveis() {
+    try {
+        // Lista de pastas conhecidas (fallback)
+        const pastasConhecidas = [
+            "Aclamação", "Adoração", "Ato Penitencial", "Campanha da Fraternidade",
+            "Comunhão", "Cordeiro", "Entrada", "Final", "Gloria", "Maria",
+            "Natal", "Novena", "Ofertório", "Paz", "Quaresma", "Santo", "Terço"
+        ];
+
+        // Limpar select de pastas
+        pastaSelect.innerHTML = '<option value="">Escolha uma pasta...</option>';
+
+        // Verificar quais pastas existem e têm conteúdo
+        for (const pasta of pastasConhecidas) {
+            try {
+                const canticos = await carregarCanticosDaPasta(pasta);
+                if (canticos && canticos.length > 0) {
+                    canticosPorPasta[pasta] = canticos;
+                    const option = document.createElement('option');
+                    option.value = pasta;
+                    option.textContent = pasta;
+                    pastaSelect.appendChild(option);
+                }
+            } catch (error) {
+                console.log(`Pasta ${pasta} não encontrada ou vazia`);
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao carregar pastas:', error);
+        mostrarToast('Erro ao carregar pastas disponíveis', 'error');
+    }
+}
+
+// Função para carregar cânticos de uma pasta específica
+async function carregarCanticosDaPasta(pasta) {
+    try {
+        const response = await fetch(`./Letras/${encodeURIComponent(pasta)}/`);
+        if (!response.ok) {
+            throw new Error(`Pasta ${pasta} não encontrada`);
+        }
+        
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        // Extrair links de arquivos (PDF, JPEG, JPG, PNG)
+        const links = doc.querySelectorAll('a[href]');
+        const arquivos = [];
+        
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && (href.endsWith('.pdf') || href.endsWith('.jpeg') || 
+                        href.endsWith('.jpg') || href.endsWith('.png'))) {
+                // Decodificar o nome do arquivo
+                const nomeArquivo = decodeURIComponent(href);
+                arquivos.push(nomeArquivo);
+            }
+        });
+        
+        return arquivos;
+    } catch (error) {
+        // Fallback: tentar carregar arquivo individual para verificar se pasta existe
+        const arquivosComuns = [
+            'index.html', 'README.md', '.gitkeep'
+        ];
+        
+        for (const arquivo of arquivosComuns) {
+            try {
+                const testResponse = await fetch(`./Letras/${encodeURIComponent(pasta)}/${arquivo}`);
+                if (testResponse.ok) {
+                    // Pasta existe, mas não conseguimos listar arquivos
+                    // Retornar array vazio para indicar que pasta existe
+                    return [];
+                }
+            } catch (e) {
+                // Continuar tentando
+            }
+        }
+        
+        throw error;
+    }
+}
+
 function carregarCanticos(pasta) {
     if (!pasta) {
         canticoSelect.innerHTML = '<option value="">Primeiro selecione uma pasta...</option>';
@@ -194,24 +170,45 @@ function carregarCanticos(pasta) {
 
     loading.classList.add('show');
     
-    // Simular carregamento
-    setTimeout(() => {
-        const canticos = canticosPorPasta[pasta] || [];
-        
-        canticoSelect.innerHTML = '<option value="">Selecione um cântico...</option>';
-        
-        if (canticos.length === 0) {
-            canticoSelect.innerHTML += '<option value="" disabled>Nenhum cântico disponível</option>';
-        } else {
-            canticos.forEach(cantico => {
-                const nomeFormatado = formatarNomeCantico(cantico);
-                canticoSelect.innerHTML += `<option value="${cantico}">${nomeFormatado}</option>`;
+    // Usar dados já carregados ou tentar carregar novamente
+    const canticos = canticosPorPasta[pasta];
+    
+    if (canticos) {
+        preencherSelectCanticos(canticos);
+    } else {
+        // Tentar carregar dinamicamente
+        carregarCanticosDaPasta(pasta)
+            .then(canticos => {
+                canticosPorPasta[pasta] = canticos;
+                preencherSelectCanticos(canticos);
+            })
+            .catch(error => {
+                console.error(`Erro ao carregar cânticos da pasta ${pasta}:`, error);
+                canticoSelect.innerHTML = '<option value="" disabled>Erro ao carregar cânticos</option>';
+                canticoSelect.disabled = true;
+                mostrarToast(`Erro ao carregar cânticos da pasta ${pasta}`, 'error');
+            })
+            .finally(() => {
+                loading.classList.remove('show');
             });
-        }
-        
-        canticoSelect.disabled = canticos.length === 0;
-        loading.classList.remove('show');
-    }, 500);
+    }
+}
+
+function preencherSelectCanticos(canticos) {
+    canticoSelect.innerHTML = '<option value="">Selecione um cântico...</option>';
+    
+    if (canticos.length === 0) {
+        canticoSelect.innerHTML += '<option value="" disabled>Nenhum cântico disponível</option>';
+        canticoSelect.disabled = true;
+    } else {
+        canticos.forEach(cantico => {
+            const nomeFormatado = formatarNomeCantico(cantico);
+            canticoSelect.innerHTML += `<option value="${cantico}">${nomeFormatado}</option>`;
+        });
+        canticoSelect.disabled = false;
+    }
+    
+    loading.classList.remove('show');
 }
 
 function formatarNomeCantico(nomeArquivo) {
@@ -345,19 +342,7 @@ function abrirLetra(pasta, arquivo, nome) {
         
         // Aguardar carregamento da imagem para ajustar o popup
         letraImage.onload = function() {
-            // Ajustar tamanho do popup baseado na imagem
-            const popupContent = document.querySelector('.popup-content');
-            const maxWidth = Math.min(window.innerWidth * 0.9, this.naturalWidth + 100);
-            const maxHeight = Math.min(window.innerHeight * 0.9, this.naturalHeight + 150);
-            
-            popupContent.style.maxWidth = maxWidth + 'px';
-            popupContent.style.maxHeight = maxHeight + 'px';
-            
-            // Ajustar altura da imagem se necessário
-            if (this.naturalHeight > window.innerHeight * 0.7) {
-                this.style.maxHeight = (window.innerHeight * 0.7) + 'px';
-                this.style.width = 'auto';
-            }
+            ajustarPopupParaDispositivo(this);
         };
     } else {
         // Exibir como PDF no iframe
@@ -366,10 +351,7 @@ function abrirLetra(pasta, arquivo, nome) {
         letraFrame.src = url;
         letraContainer.classList.remove('image-container');
         
-        // Resetar tamanho do popup para PDFs
-        const popupContent = document.querySelector('.popup-content');
-        popupContent.style.maxWidth = '90vw';
-        popupContent.style.maxHeight = '90vh';
+        ajustarPopupParaDispositivo();
     }
     
     popupOverlay.style.display = 'block';
@@ -380,10 +362,97 @@ function abrirLetra(pasta, arquivo, nome) {
     }, 10);
 }
 
+// Função para ajustar popup especificamente para dispositivos iOS
+function ajustarPopupParaDispositivo(imagem = null) {
+    const popupContent = document.querySelector('.popup-content');
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isMobile = window.innerWidth <= 768;
+    
+    // Reset estilos
+    popupContent.style.maxWidth = '';
+    popupContent.style.maxHeight = '';
+    popupContent.style.width = '';
+    popupContent.style.height = '';
+    
+    if (isIOS || isMobile) {
+        // Configurações específicas para iOS e dispositivos móveis
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        
+        // Usar quase toda a tela em dispositivos móveis
+        popupContent.style.maxWidth = '95vw';
+        popupContent.style.maxHeight = '95vh';
+        popupContent.style.width = '95vw';
+        
+        if (imagem) {
+            // Para imagens, ajustar baseado no tamanho da imagem
+            const aspectRatio = imagem.naturalWidth / imagem.naturalHeight;
+            const maxImageHeight = viewportHeight * 0.8; // 80% da altura da tela
+            const maxImageWidth = viewportWidth * 0.9; // 90% da largura da tela
+            
+            let finalWidth, finalHeight;
+            
+            if (imagem.naturalWidth > maxImageWidth || imagem.naturalHeight > maxImageHeight) {
+                // Redimensionar mantendo proporção
+                if (aspectRatio > 1) {
+                    // Imagem mais larga que alta
+                    finalWidth = Math.min(maxImageWidth, imagem.naturalWidth);
+                    finalHeight = finalWidth / aspectRatio;
+                } else {
+                    // Imagem mais alta que larga
+                    finalHeight = Math.min(maxImageHeight, imagem.naturalHeight);
+                    finalWidth = finalHeight * aspectRatio;
+                }
+            } else {
+                finalWidth = imagem.naturalWidth;
+                finalHeight = imagem.naturalHeight;
+            }
+            
+            imagem.style.width = finalWidth + 'px';
+            imagem.style.height = finalHeight + 'px';
+            imagem.style.maxWidth = '100%';
+            imagem.style.maxHeight = '80vh';
+            imagem.style.objectFit = 'contain';
+        }
+        
+        // Ajustar altura do popup para iOS
+        popupContent.style.height = 'auto';
+        popupContent.style.maxHeight = '95vh';
+        popupContent.style.overflow = 'auto';
+        
+        // Configuração específica para iOS para evitar problemas de viewport
+        if (isIOS) {
+            popupContent.style.position = 'fixed';
+            popupContent.style.top = '2.5vh';
+            popupContent.style.left = '2.5vw';
+            popupContent.style.transform = 'none';
+            popupContent.style.webkitOverflowScrolling = 'touch';
+        }
+    } else {
+        // Desktop - configurações originais
+        if (imagem) {
+            const maxWidth = Math.min(window.innerWidth * 0.9, imagem.naturalWidth + 100);
+            const maxHeight = Math.min(window.innerHeight * 0.9, imagem.naturalHeight + 150);
+            
+            popupContent.style.maxWidth = maxWidth + 'px';
+            popupContent.style.maxHeight = maxHeight + 'px';
+            
+            if (imagem.naturalHeight > window.innerHeight * 0.7) {
+                imagem.style.maxHeight = (window.innerHeight * 0.7) + 'px';
+                imagem.style.width = 'auto';
+            }
+        } else {
+            popupContent.style.maxWidth = '90vw';
+            popupContent.style.maxHeight = '90vh';
+        }
+    }
+}
+
 function fecharPopup() {
     const letraContainer = document.getElementById('letra-container');
     const letraFrame = document.getElementById('letra-frame');
     const letraImage = document.getElementById('letra-image');
+    const popupContent = document.querySelector('.popup-content');
     
     popupOverlay.style.opacity = '0';
     setTimeout(() => {
@@ -392,10 +461,23 @@ function fecharPopup() {
         letraImage.src = '';
         letraContainer.classList.remove('image-container');
         
-        // Resetar tamanho do popup
-        const popupContent = document.querySelector('.popup-content');
-        popupContent.style.maxWidth = '90vw';
-        popupContent.style.maxHeight = '90vh';
+        // Reset estilos do popup
+        popupContent.style.maxWidth = '';
+        popupContent.style.maxHeight = '';
+        popupContent.style.width = '';
+        popupContent.style.height = '';
+        popupContent.style.position = '';
+        popupContent.style.top = '';
+        popupContent.style.left = '';
+        popupContent.style.transform = '';
+        
+        // Reset estilos da imagem
+        if (letraImage) {
+            letraImage.style.width = '';
+            letraImage.style.height = '';
+            letraImage.style.maxWidth = '';
+            letraImage.style.maxHeight = '';
+        }
     }, 300);
 }
 
@@ -547,4 +629,32 @@ document.addEventListener('keydown', function(e) {
 if ('ontouchstart' in window) {
     document.body.classList.add('touch-device');
 }
+
+
+
+// Adicionar suporte a eventos de redimensionamento para ajustar popup
+window.addEventListener('resize', function() {
+    if (popupOverlay.style.display === 'block') {
+        const letraImage = document.getElementById('letra-image');
+        if (letraImage.style.display !== 'none') {
+            ajustarPopupParaDispositivo(letraImage);
+        } else {
+            ajustarPopupParaDispositivo();
+        }
+    }
+});
+
+// Adicionar suporte a orientação para dispositivos móveis
+window.addEventListener('orientationchange', function() {
+    setTimeout(() => {
+        if (popupOverlay.style.display === 'block') {
+            const letraImage = document.getElementById('letra-image');
+            if (letraImage.style.display !== 'none') {
+                ajustarPopupParaDispositivo(letraImage);
+            } else {
+                ajustarPopupParaDispositivo();
+            }
+        }
+    }, 500); // Aguardar mudança de orientação
+});
 
