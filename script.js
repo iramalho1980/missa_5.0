@@ -327,9 +327,51 @@ function removerCantico(id) {
 
 function abrirLetra(pasta, arquivo, nome) {
     const url = `./Letras/${encodeURIComponent(pasta)}/${encodeURIComponent(arquivo)}`;
+    const letraContainer = document.getElementById('letra-container');
+    const letraFrame = document.getElementById('letra-frame');
+    const letraImage = document.getElementById('letra-image');
     
     popupTitle.textContent = nome;
-    letraFrame.src = url;
+    
+    // Detectar se é imagem ou PDF
+    const isImage = /\.(jpeg|jpg|png|gif|bmp|webp)$/i.test(arquivo);
+    
+    if (isImage) {
+        // Exibir como imagem
+        letraFrame.style.display = 'none';
+        letraImage.style.display = 'block';
+        letraImage.src = url;
+        letraContainer.classList.add('image-container');
+        
+        // Aguardar carregamento da imagem para ajustar o popup
+        letraImage.onload = function() {
+            // Ajustar tamanho do popup baseado na imagem
+            const popupContent = document.querySelector('.popup-content');
+            const maxWidth = Math.min(window.innerWidth * 0.9, this.naturalWidth + 100);
+            const maxHeight = Math.min(window.innerHeight * 0.9, this.naturalHeight + 150);
+            
+            popupContent.style.maxWidth = maxWidth + 'px';
+            popupContent.style.maxHeight = maxHeight + 'px';
+            
+            // Ajustar altura da imagem se necessário
+            if (this.naturalHeight > window.innerHeight * 0.7) {
+                this.style.maxHeight = (window.innerHeight * 0.7) + 'px';
+                this.style.width = 'auto';
+            }
+        };
+    } else {
+        // Exibir como PDF no iframe
+        letraImage.style.display = 'none';
+        letraFrame.style.display = 'block';
+        letraFrame.src = url;
+        letraContainer.classList.remove('image-container');
+        
+        // Resetar tamanho do popup para PDFs
+        const popupContent = document.querySelector('.popup-content');
+        popupContent.style.maxWidth = '90vw';
+        popupContent.style.maxHeight = '90vh';
+    }
+    
     popupOverlay.style.display = 'block';
     
     // Adicionar classe para animação
@@ -339,10 +381,21 @@ function abrirLetra(pasta, arquivo, nome) {
 }
 
 function fecharPopup() {
+    const letraContainer = document.getElementById('letra-container');
+    const letraFrame = document.getElementById('letra-frame');
+    const letraImage = document.getElementById('letra-image');
+    
     popupOverlay.style.opacity = '0';
     setTimeout(() => {
         popupOverlay.style.display = 'none';
         letraFrame.src = '';
+        letraImage.src = '';
+        letraContainer.classList.remove('image-container');
+        
+        // Resetar tamanho do popup
+        const popupContent = document.querySelector('.popup-content');
+        popupContent.style.maxWidth = '90vw';
+        popupContent.style.maxHeight = '90vh';
     }, 300);
 }
 

@@ -241,8 +241,6 @@
             max-height: 90vh;
             overflow: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
         }
 
         .popup-header {
@@ -282,24 +280,6 @@
             height: 70vh;
             border: none;
             border-radius: 10px;
-        }
-
-        .letra-display.image-mode {
-            height: auto;
-            max-height: 70vh;
-            object-fit: contain;
-        }
-
-        .letra-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-        }
-
-        .letra-container.image-container {
-            align-items: center;
-            justify-content: center;
         }
 
         .empty-state {
@@ -469,9 +449,8 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div id="letra-container" class="letra-container">
+            <div id="letra-container">
                 <iframe class="letra-display" id="letra-frame" src=""></iframe>
-                <img class="letra-display image-mode" id="letra-image" src="" style="display: none;" alt="Letra do cântico">
             </div>
         </div>
     </div>
